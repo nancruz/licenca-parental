@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subsídio Parental</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+    <script src="app.js" defer></script>
+</head>
+<body class="bg-gray-100 p-10">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-5">Planeador de Subsídio Parental</h1>
+        
+        <!-- Formulário de entrada -->
+        <form id="parentalForm" class="bg-white p-6 rounded shadow-md">
+            <div class="mb-4">
+                <label for="dueDate" class="block text-sm font-medium text-gray-700">Data Prevista de Parto:</label>
+                <input type="date" id="dueDate" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" required onchange="onChangeDueDate(this.value)">
+            </div>
+
+            <div class="mb-4">
+                <label for="parentalOption" class="block text-sm font-medium text-gray-700">Escolha a duração da licença parental:</label>
+                <select id="parentalOption" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" onchange="onChangeTotalDays()">
+                    <option value="120">120 dias</option>
+                    <option value="150">150 dias</option>
+                    <option value="180">180 dias</option>
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="twins" class="block text-sm font-medium text-gray-700">Nascimentos múltiplos?</label>
+                <input type="number" id="twins" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="Número de gémeos (além do primeiro)" min="0">
+            </div>
+
+            <!-- Secção de dias obrigatórios -->
+            <div class="p-2 mb-6 border border-black border-solid">
+                <h2 class="text-xl font-bold mb-2 text-center">Primeiros 42 dias</h2>
+                <!-- Mãe - Dias obrigatórios (fixos) -->
+                <h3 class="font-bold mb-2 underline">Mãe (42 dias após o parto)</h3>
+                <div class="mb-4 flex">
+                    <p class="mr-2"><strong>Inicio:</strong> <span id="motherStartDate">N/A</span></p>
+                    <p><strong>Fim:</strong> <span id="motherEndDate">N/A</span></p>
+                </div>
+
+                <!-- Pai - Selecionar múltiplos blocos obrigatórios -->
+                <h3 class="font-bold underline">Pai (28 dias obrigatórios + 7 facultativos)</h3>
+                <div>
+                    <div id="fatherMandatoryBlocks" class="space-y-2"></div>
+                    <button type="button" id="addFatherMandatoryBlock" class="mt-2 bg-green-500 text-white py-1 px-4 rounded">Adicionar Bloco</button>
+                </div>
+            </div>
+
+            <div class="border border-black border-solid p-2 mb-2">
+                <h2 class="text-xl font-bold mb-2 text-center">Restantes dias</h2>
+                <!-- Secção para a mãe -->
+                <div class="mb-6">
+                    <h3 class="font-bold mb-2 underline">Blocos de dias para a Mãe</h3>
+                    <div id="motherBlocks" class="space-y-2"></div>
+                    <button type="button" id="addMotherBlock" class="mt-2 bg-green-500 text-white py-1 px-4 rounded">Adicionar Bloco</button>
+                </div>
+
+                <!-- Secção para o pai -->
+                <div>
+                    <h3 class="font-bold mb-2 underline">Blocos de dias para o Pai</h3>
+                    <div id="fatherBlocks" class="space-y-2"></div>
+                    <button type="button" id="addFatherBlock" class="mt-2 bg-green-500 text-white py-1 px-4 rounded">Adicionar Bloco</button>
+                </div>
+            </div>
+
+            <!-- Contador de dias restantes -->
+            <h3 class="text-lg font-bold">Dias Restantes: <span id="remainingDays">120 dias.</span></h3>
+
+            <div class="flex justify-between">
+                <button type="button" id="resetBtn" class="bg-red-500 text-white font-bold py-2 px-4 rounded">Reset</button>
+            </div>
+        </form>
+
+        <div id="result" class="mt-6"></div>
+
+        <!-- Calendário -->
+        <div id="calendar" class="mt-6"></div>
+    </div>
+</body>
+</html>
